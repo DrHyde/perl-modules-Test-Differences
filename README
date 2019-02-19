@@ -18,18 +18,14 @@ perldoc command.
 
 You can also look for information at:
 
-    RT, CPAN's request tracker
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Test-Differences
-
-    AnnoCPAN, Annotated CPAN documentation
-        http://annocpan.org/dist/Test-Differences
+    The bug tracker:
+        https://github.com/DrHyde/perl-modules-Test-Differences/issues
 
     CPAN Ratings
         http://cpanratings.perl.org/d/Test-Differences
 
-    Search CPAN
-        http://search.cpan.org/dist/Test-Differences
-
+    MetaCPAN:
+        https://metacpan.org/pod/Test::Differences
 
 COPYRIGHT AND LICENCE
 
