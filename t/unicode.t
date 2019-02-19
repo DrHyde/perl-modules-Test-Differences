@@ -3,7 +3,8 @@
 use strict;
 use warnings;
 
-use Capture::Tiny qw(capture);
+use lib 't/lib';
+use Test::Differences::TestUtils::Capture;
 
 use Test::More;
 use Test::Differences;
@@ -15,7 +16,7 @@ eq_or_diff(
     ["\N{U+2603}", "\N{U+1F4A9}"]
 );
 
-my($stdout, $stderr) = capture { system (
+my $stderr = capture_error { system (
     $^X, (map { "-I$_" } (@INC)),
     qw(-Mstrict -Mwarnings -MTest::More -MTest::Differences),
     '-e', '
@@ -29,8 +30,7 @@ my($stdout, $stderr) = capture { system (
 
 is(
     $stderr,
-'
-#   Failed test at -e line 3.
+'#   Failed test at -e line 3.
 # +----+---------------+----------------+
 # | Elt|Got            |Expected        |
 # +----+---------------+----------------+

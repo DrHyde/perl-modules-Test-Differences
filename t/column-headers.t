@@ -3,16 +3,17 @@
 use strict;
 use warnings;
 
+use lib 't/lib';
+use Test::Differences::TestUtils::Capture;
+
 use Test::More;
-use Capture::Tiny qw(capture);
 
 END { done_testing(); }
 
-my($stdout, $stderr) = capture { system (
+my $stderr = capture_error { system (
     $^X, (map { "-I$_" } (@INC)),
     't/script/default-headers'
 ) };
-$stderr =~ s/^\s+//; # see https://github.com/Ovid/Test-Differences/issues/15
 is(
     $stderr,
 "#   Failed test 'both the same'
@@ -29,11 +30,10 @@ is(
     "got expected error output"
 );
 
-($stdout, $stderr) = capture { system (
+$stderr = capture_error { system (
     $^X, (map { "-I$_" } (@INC)),
     't/script/custom-headers'
 ) };
-$stderr =~ s/^\s+//;
 is(
     $stderr,
 "#   Failed test 'both the same'

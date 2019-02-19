@@ -1,6 +1,7 @@
 Changes file for Test::Differences
 
 0.65 XXXXXXXXXXXXXXXXXXXXX
+    - Canonical repo is now https://github.com/DrHyde/perl-modules-Test-Differences
     - Fix discrepancies in copyright notices (thanks to Christian Neukirchen
       for pointing them out)
     - Make the tests more consistent (thanks to genio)

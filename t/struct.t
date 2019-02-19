@@ -3,7 +3,8 @@
 use strict;
 use warnings;
 
-use Capture::Tiny qw(capture);
+use lib 't/lib';
+use Test::Differences::TestUtils::Capture;
 
 use Test::More;
 use Test::Differences;
@@ -25,7 +26,7 @@ plan tests => 1 + scalar @tests;
 $_->() for @tests;
 
 # submitted by bessarabov, https://github.com/Ovid/Test-Differences/issues/2
-my($stdout, $stderr) = capture { system (
+my $stderr = capture_error { system (
     $^X, (map { "-I$_" } (@INC)),
     qw(-Mstrict -Mwarnings -MTest::More -MTest::Differences),
     '-e', '

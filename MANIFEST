@@ -20,3 +20,4 @@ t/script/custom-headers
 t/script/default-headers
 MANIFEST.SKIP
 t/unicode.t
+t/lib/Test/Differences/TestUtils/Capture.pm
