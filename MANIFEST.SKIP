@@ -2,4 +2,3 @@
 ^\.git
 .appveyor.yml
 .cirrus.yml
-.github/main.workflow

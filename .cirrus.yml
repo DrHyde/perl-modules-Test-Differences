@@ -1,7 +1,7 @@
 freebsd_instance:
   image: freebsd-12-0-release-amd64
 
-task:
+freebsd_tests_task:
   test_script:
     - pkg install -y perl5
     - echo|cpan App::cpanminus
