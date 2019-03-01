@@ -14,6 +14,7 @@ WriteMakefile(
     VERSION_FROM  => 'lib/Test/Differences.pm',
     ABSTRACT_FROM => 'lib/Test/Differences.pm',
     PL_FILES      => {},
+    LICENSE       => 'artistic_2',
     PREREQ_PM     => {
         'Test::More'    => '0.88', # done_testing
         'Text::Diff'    => 1.43,
