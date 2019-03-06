@@ -15,8 +15,8 @@ my $stderr = capture_error { system (
         eq_or_diff(sub{1}, sub{2})
     '
 ) };
-is(
-    $stderr,
+ok(
+    $stderr eq  # perl 5.16 onwards
 '#   Failed test at -e line 4.
 # +----+-------------------+-------------------+
 # | Elt|Got                |Expected           |
@@ -28,7 +28,20 @@ is(
 # |   4|}                  |}                  |
 # +----+-------------------+-------------------+
 # Looks like you failed 1 test of 1.
-',
+' ||
+    $stderr eq # perl 5.8 to 5.14
+q{#   Failed test at -e line 4.
+# +----+------------------------+------------------------+
+# | Elt|Got                     |Expected                |
+# +----+------------------------+------------------------+
+# |   0|sub {                   |sub {                   |
+# |   1|    use warnings;       |    use warnings;       |
+# |   2|    use strict 'refs';  |    use strict 'refs';  |
+# *   3|    1;                  |    2;                  *
+# |   4|}                       |}                       |
+# +----+------------------------+------------------------+
+# Looks like you failed 1 test of 1.
+},
     "got expected error output for different sub-refs"
 );
 
