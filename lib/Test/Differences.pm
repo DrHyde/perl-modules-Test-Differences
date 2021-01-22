@@ -388,10 +388,48 @@ sub eq_or_diff_data { $_[3] = { data_type => "data" }; goto &eq_or_diff; }
 ## references and a shallow one for scalars.
 my $joint = chr(0) . "A" . chr(1);
 
+sub _isnt_ARRAY_of_scalars {
+    return 1 if ref ne "ARRAY";
+    return scalar grep ref, @$_;
+}
+
+sub _isnt_HASH_of_scalars {
+    return 1 if ref ne "HASH";
+    return scalar grep ref, values %$_;
+}
+
+use constant ARRAY_of_scalars           => "ARRAY of scalars";
+use constant ARRAY_of_ARRAYs_of_scalars => "ARRAY of ARRAYs of scalars";
+use constant ARRAY_of_HASHes_of_scalars => "ARRAY of HASHes of scalars";
+use constant HASH_of_scalars            => "HASH of scalars";
+
+sub _grok_type {
+    local $_ = shift if @_;
+    return "SCALAR" unless ref;
+    if ( ref eq "ARRAY" ) {
+        return undef unless @$_;
+        return ARRAY_of_scalars
+          unless _isnt_ARRAY_of_scalars;
+        return ARRAY_of_ARRAYs_of_scalars
+          unless grep _isnt_ARRAY_of_scalars, @$_;
+        return ARRAY_of_HASHes_of_scalars
+          unless grep _isnt_HASH_of_scalars, @$_;
+        return 0;
+    }
+    elsif ( ref eq 'HASH' ) {
+        return HASH_of_scalars
+          unless _isnt_HASH_of_scalars($_);
+        return 0;
+    }
+}
+
 sub eq_or_diff {
     my ( @vals, $name, $options );
     $options = pop if @_ > 2 && ref $_[-1];
     ( $vals[0], $vals[1], $name ) = @_;
+
+    my @types = map { _grok_type($_) } @vals;
+    my $dump_it = !$types[0] || !$types[1];
 
     my($data_type, $filename_a, $filename_b);
     if($options) {
@@ -433,7 +471,8 @@ sub eq_or_diff {
         $context = $options->{context}
           if exists $options->{context};
 
-        $context = 2**31 unless defined $context;
+        $context = $dump_it ? 2**31 : grep( @$_ > 25, $got, $expected ) ? 3 : 25
+            unless defined $context;
 
         confess "context must be an integer: '$context'\n"
           unless $context =~ /\A\d+\z/;
