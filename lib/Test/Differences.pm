@@ -126,8 +126,30 @@ a normal unified diff) or 25 lines.
 
 =item * C<data_type>
 
-C<text> or C<data>. See C<eq_or_diff_text> and C<eq_or_diff_data> to
-understand this. You can usually ignore this.
+C<text> or C<data>. This normally defaults to C<data>. If, however, neither of
+C<$got> or C<$expected> is a reference then  it defaults to C<text>. You can
+also force one or the other by calling C<eq_or_diff_text> or
+C<eq_or_diff_data>.
+
+The difference is that in text mode lines are numbered from 1, but in data mode
+from 0 (and are refered to as 'elements' (Elt) instead of lines):
+
+    # +---+-------+----------+
+    # | Ln|Got    |Expected  |
+    # +---+-------+----------+
+    # *  1|'foo'  |'bar'     *
+    # +---+-------+----------+
+
+    # +----+---------+----+----------+
+    # | Elt|Got      | Elt|Expected  |
+    # +----+---------+----+----------+
+    # *   0|[        *   0|'bar'     *
+    # *   1|  'foo'  *    |          |
+    # *   2|]        *    |          |
+    # +----+---------+----+----------+
+
+The difference is purely cosmetic, it makes no difference to how comparisons
+are performed.
 
 =item * C<Sortkeys>
 
@@ -318,7 +340,7 @@ if you do this.
 
 =cut
 
-our $VERSION = "0.67"; # or "0.001_001" for a dev release
+our $VERSION = "0.68"; # or "0.001_001" for a dev release
 $VERSION = eval $VERSION;
 
 use Exporter;
