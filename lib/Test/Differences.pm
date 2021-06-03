@@ -212,36 +212,12 @@ You can run the following to understand the different diff output styles:
 Generally you'll find that the following test output is disappointing.
 
     use Test::Differences;
-
-    my $want = { 'Traditional Chinese' => '中國' };
-    my $have = { 'Traditional Chinese' => '中国' };
-
-    eq_or_diff $have, $want, 'Unicode, baby';
-
-The output looks like this:
-
-    #   Failed test 'Unicode, baby'
-    #   at t/unicode.t line 12.
-    # +----+----------------------------+----------------------------+
-    # | Elt|Got                         |Expected                    |
-    # +----+----------------------------+----------------------------+
-    # |   0|'Traditional Chinese'       |'Traditional Chinese'       |
-    # *   1|'\xe4\xb8\xad\xe5\x9b\xbd'  |'\xe4\xb8\xad\xe5\x9c\x8b'  *
-    # +----+----------------------------+----------------------------+
-    # Looks like you failed 1 test of 1.
-    Dubious, test returned 1 (wstat 256, 0x100)
-
-This is generally not helpful and someone points out that you didn't declare
-your test program as being utf8, so you do that:
-
-    use Test::Differences;
     use utf8;
 
     my $want = { 'Traditional Chinese' => '中國' };
     my $have = { 'Traditional Chinese' => '中国' };
 
     eq_or_diff $have, $want, 'Unicode, baby';
-
 
 Here's what you get:
 
@@ -257,19 +233,7 @@ Here's what you get:
     Dubious, test returned 1 (wstat 256, 0x100)
     Failed 1/1 subtests
 
-That's better, but still awful. However, if you have C<Text::Diff> 0.40 or
-higher installed, you can add this to your code:
-
-    BEGIN { $ENV{DIFF_OUTPUT_UNICODE} = 1 }
-
-Make sure you do this I<before> you load L<Text::Diff>. Then this is the output:
-
-    # +----+-----------------------+-----------------------+
-    # | Elt|Got                    |Expected               |
-    # +----+-----------------------+-----------------------+
-    # |   0|'Traditional Chinese'  |'Traditional Chinese'  |
-    # *   1|'中国'                 |'中國'                 *
-    # +----+-----------------------+-----------------------+
+A patch to fix this would be *most* welcome.
 
 =head1 DEPLOYING
 
