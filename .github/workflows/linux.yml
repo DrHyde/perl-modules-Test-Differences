@@ -41,4 +41,4 @@ jobs:
             rm -rf /home/runner/.cpanm/work/*
             cpanm --installdeps . || cat /home/runner/.cpanm/work/*/build.log
             perl Makefile.PL
-            make test TEST_VERBOSE=1
+            make test TEST_VERBOSE=1 && cpanm Unknown::Values && perl -Mblib t/unknown-values.t

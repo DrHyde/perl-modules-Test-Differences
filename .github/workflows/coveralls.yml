@@ -13,5 +13,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cpanm --installdeps .
-          cpanm Devel::Cover::Report::Coveralls
+          cpanm Devel::Cover::Report::Coveralls Unknown::Values
           cover -test -report Coveralls
