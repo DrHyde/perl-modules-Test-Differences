@@ -41,4 +41,27 @@ jobs:
             rm -rf /home/runner/.cpanm/work/*
             cpanm --installdeps . || cat /home/runner/.cpanm/work/*/build.log
             perl Makefile.PL
-            make test TEST_VERBOSE=1 && cpanm Unknown::Values && perl -Mblib t/unknown-values.t
+            make test TEST_VERBOSE=1
+
+  build_with_unknown_values:
+    runs-on: 'ubuntu-latest'
+    name: with Unknown::Values installed
+    steps:
+      - name: check out code
+        uses: actions/checkout@v2
+
+      - name: switch to perl 5.30
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: 5.30
+
+      - name: run tests
+        env:
+          PERL_USE_UNSAFE_INC: 0
+        run: |
+            perl -v
+            cpanm ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage Unknown::Values || cat /home/runner/.cpanm/work/*/build.log
+            rm -rf /home/runner/.cpanm/work/*
+            cpanm --installdeps . || cat /home/runner/.cpanm/work/*/build.log
+            perl Makefile.PL
+            make test TEST_VERBOSE=1
