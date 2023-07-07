@@ -1,0 +1,30 @@
+on: [push, pull_request]
+name: Weird perls
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        weirdness: [ 'NO_TAINT_SUPPORT', 'SILENT_NO_TAINT_SUPPORT' ]
+    name: Perl with ${{ matrix.weirdness }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build perl ...
+        run: |
+            curl -L https://install.perlbrew.pl | bash
+            source ~/perl5/perlbrew/etc/bashrc
+            perlbrew install --notest -Accflags=-D${{ matrix.weirdness }} perl-5.38.0 --as perl-5.38.0-${{ matrix.weirdness }}
+
+      - name: run tests
+        env:
+          PERL_USE_UNSAFE_INC: 0
+        run: |
+            source ~/perl5/perlbrew/etc/bashrc
+            perlbrew switch perl-5.38.0-${{ matrix.weirdness }}
+            perlbrew install-cpanm
+            cpanm Data::Dumper::Concise
+            perl -MConfig -MData::Dumper::Concise -E 'say Dumper({ build => ${{ matrix.weirdness }}, taint_support => $Config{taint_support}, taint_disabled => $Config{taint_disabled}})'
+            cpanm --installdeps .
+            perl Makefile.PL
+            make test
