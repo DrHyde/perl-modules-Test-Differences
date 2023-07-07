@@ -41,6 +41,7 @@ jobs:
             perl -Mparent -e0 || cpanm parent
             rm -rf /home/runner/.cpanm/work/*
             cpanm --installdeps . || cat /home/runner/.cpanm/work/*/build.log
+            cpanm Unknown::Values
             perl Makefile.PL
             make test TEST_VERBOSE=1
 
