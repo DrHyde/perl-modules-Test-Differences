@@ -1,6 +1,6 @@
 Changes file for Test::Differences
 
-0.70   XXXX-XX-XX
+0.70   2023-07-07
     - Stop pointless use of taint-mode in tests, so tests pass when perl is
       built without taint support
 
