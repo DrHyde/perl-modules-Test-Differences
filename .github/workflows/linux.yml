@@ -67,3 +67,25 @@ jobs:
             cpanm --installdeps . || cat /home/runner/.cpanm/work/*/build.log
             perl Makefile.PL
             make test TEST_VERBOSE=1
+
+  build_with_bool_supporting_perl_old_DD:
+    runs-on: 'ubuntu-latest'
+    name: New perl with bools, old Data::Dumper
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: 5.38
+      - name: run tests
+        env:
+          PERL_USE_UNSAFE_INC: 0
+        run: |
+            perl -v
+            cpanm ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage || cat /home/runner/.cpanm/work/*/build.log
+            perl -Mparent -e0 || cpanm parent
+            rm -rf /home/runner/.cpanm/work/*
+            cpanm --installdeps . || cat /home/runner/.cpanm/work/*/build.log
+            cpanm Data::Dumper@2.183
+            perl Makefile.PL
+            make test TEST_VERBOSE=1
+
