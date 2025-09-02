@@ -25,7 +25,7 @@ jobs:
     name: Perl ${{ matrix.perl }}
     steps:
       - name: check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: switch to perl ${{ matrix.perl }}
         uses: shogo82148/actions-setup-perl@v1
@@ -50,7 +50,7 @@ jobs:
     name: with Unknown::Values installed
     steps:
       - name: check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: switch to perl 5.30
         uses: shogo82148/actions-setup-perl@v1
@@ -72,7 +72,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     name: New perl with bools, old Data::Dumper
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: 5.38
