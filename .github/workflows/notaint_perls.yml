@@ -8,7 +8,7 @@ jobs:
         weirdness: [ 'NO_TAINT_SUPPORT', 'SILENT_NO_TAINT_SUPPORT' ]
     name: Perl with ${{ matrix.weirdness }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Build perl ...
         run: |
