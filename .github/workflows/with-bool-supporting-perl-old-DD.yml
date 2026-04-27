@@ -1,0 +1,27 @@
+on:
+  push:
+    paths:
+      - '.github/workflows/with-bool-supporting-perl-old-DD.yml'
+      - '.github/workflows/run-with-bool-supporting-perl-old-DD'
+name: Linux, perl 5.42, with an old Data::Dumper
+jobs:
+  build_with_bool_supporting_perl_old_DD:
+    runs-on: 'ubuntu-latest'
+    name: New perl with bools, old Data::Dumper
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: "5.42"
+      - name: run tests
+        env:
+          PERL_USE_UNSAFE_INC: 0
+        run: |
+            perl -v
+            cpanm Data::Dumper@2.183
+            cpanm ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage
+            perl -Mparent -e0
+            cpanm --installdeps .
+            perl Makefile.PL
+            make test TEST_VERBOSE=1
+
